@@ -14,5 +14,7 @@ void inserir_prioridade(fila_prioridade* varFila, void* elemento, int prioridade
 void* peek(fila_prioridade* varFila);
 int pop_Elem(fila_prioridade* varFila);
 void clear_Fila(fila_prioridade* varFila);
+void* get_index(fila_prioridade *list, int index);
+int get_size(fila_prioridade *list);
 
 #endif

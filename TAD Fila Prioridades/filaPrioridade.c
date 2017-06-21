@@ -9,6 +9,34 @@ fila_prioridade* criar_fila_prioridade(){
 	return var;
 }
 
+/*
+	Retorna o tamanho da lista enviada
+*/
+int get_size(fila_prioridade *fila){
+	return (fila->tam);
+}
+
+/*
+	Retorna o elem do nodo equivalente ao index da lista
+*/
+void* get_index(fila_prioridade* fila, int index)
+{
+	// Caso filaa vazia ou index > size
+	if (!fila->tam || index >= fila->tam) {
+		return NULL;
+	}
+	
+	// Percorre a filaa até pegar o index desejado
+	nodo_prioridade *current = fila->first; // index = 0
+	int i;
+	for (i = 0; i<index; i++) {
+		current = current->next;
+	}
+		
+	return current->elem;
+}
+
+
 void inserir_prioridade(fila_prioridade* varFila, void* elemento, int prioridade){
 	nodo_prioridade *nTemp = criar_nodo_prioridade(elemento, prioridade); //Encapsula o elemento e prioridade em um nodo
 	
