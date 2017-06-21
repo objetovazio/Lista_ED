@@ -24,6 +24,7 @@ nodo* get_nodo_index(lista* list, int index);
 void inserir_start(lista* list, void* elem);
 void inserir_index(lista* list, void* elem, int index);
 void inserir(lista* list, void* elem);
+void inserir_ordenado(lista* list, void* elem);
 /* Fim Adicionar Elementos */
 
 /* Inicio Remover Elementos */

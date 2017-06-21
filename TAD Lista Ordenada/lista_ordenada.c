@@ -85,9 +85,30 @@ void inserir_start(lista* list, void* elem){
 }
 
 /*
-	Insere o NODO na ordem
+	Insere o NODO ao final da LISTA.
 */
 void inserir(lista* list, void* elem){
+	nodo *n = criar_nodo(elem);
+
+	// Se tamanho da lista for 0
+	if (!list->size) {
+		// Já que não há outros nós, esse será o inicial;
+		list->start = n;
+	} 
+	else {
+		nodo *end = list->end; // Pega ultimo nodo
+		end->next = n; // Seta proximo nodo de END como N
+		n->prev = end; // Seta anterior de N como END
+	}
+
+	list->end = n; // Seta N como nó final da lista
+	list->size++; // Incrementa tamanho
+}
+
+/*
+	Insere o NODO na ordem
+*/
+void inserir_ordenado(lista* list, void* elem){
 	nodo *aux = list->start;
 	int count = 0;
 	
@@ -100,16 +121,12 @@ void inserir(lista* list, void* elem){
 		return;
 	}
 	
-	if(list->size == 1 && list->compara(elem, aux->elem) == 1){
-		inserir_index(list, elem, count);
-		return;
+	while(aux->next != NULL && list->compara(elem, aux->elem) == -1){
+		count++;
+		aux = aux->next;
 	}
 	
-	while(aux->next != NULL && list->compara(elem, aux->elem) == -1){
-		printf("%d elem\n", elem);
-		aux = aux->next;
-		count++;
-	}
+	if(aux->next == NULL && list->compara(elem, aux->elem) == -1) count++;
 	
 	inserir_index(list, elem, count);
 }

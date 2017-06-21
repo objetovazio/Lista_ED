@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "lista_ordenada.h"
-#include <stdlib.h>
-#include <stdio.h>
+#include <time.h>
 
 void print_lista(lista *list){
 	int i;
@@ -22,18 +21,14 @@ int comp(int a, int b){
 int main(int argc,char **argv){
 	lista* l;
 	l = criar_lista(comp);
-	
-	
-	printf("asd\n");
+	srand(time(NULL));   // should only be called once
+	 
+	printf("start\n");
 	
 	int *i = (int *)malloc(sizeof(int));
 	for(*i = 10; *i > 0; *i = *i - 1){
-		inserir(l, *i);
+		inserir_ordenado(l, rand() % 100);
 	}
-	
-	
-	
-	print_lista(l);
 	
 	if(remover_index(l, 5)){
 		print_lista(l);
