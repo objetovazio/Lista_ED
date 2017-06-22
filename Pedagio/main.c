@@ -82,6 +82,8 @@ int main(int argc, char *argv[]) {
 	printf("%d fila(s)", filas);
 	Tuple valores_finais = malloc(sizeof(Tuple));
 	
+	
+	
 	for(i = 0; i < )
 	
 	

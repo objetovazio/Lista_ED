@@ -11,7 +11,7 @@ LeftChar=1
 [Editor_3]
 CursorCol=18
 CursorRow=15
-TopLine=1
+TopLine=25
 LeftChar=1
 [Editor_7]
 CursorCol=10
@@ -29,10 +29,10 @@ CursorRow=18
 TopLine=1
 LeftChar=1
 [Editors]
-Order=0,7,1,2,8
+Order=0,3
 Focused=0
 [Editor_0]
-CursorCol=43
-CursorRow=40
-TopLine=1
+CursorCol=2
+CursorRow=85
+TopLine=62
 LeftChar=1
