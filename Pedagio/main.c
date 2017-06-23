@@ -83,8 +83,8 @@ void zera_veiculos(Tuple *valores){
 }
 
 int main(int argc, char *argv[]) {
-	int filas = 2; //atoi(argv[1]);
-	//char *entrada = "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG";
+	int filas = atoi(argv[1]);
+	
 	int hora_flag = 60, tempo_atual = 0;
 
 	lista *listaFilas = criar_lista();
@@ -93,101 +93,80 @@ int main(int argc, char *argv[]) {
 	
 	preenche_filas_pedagio(listaFilas);
 	
-	printf("%d fila(s)\n", filas);
+	printf("\n%d fila(s)\n", filas);
 	Tuple *valores_finais = inicializa_valores_finais();
-	
-	lista *lista_tempo_fila = criar_lista();
-		
-	int i; // Cria um tempo para cada fila
-	for(i = 0; i < get_size(listaFilas); i++){
-		int *val = 0;
-		inserir(lista_tempo_fila, val);
-	}
-	
-	/*
-	int vet[filas];
+
+	int vet[filas], i;
 	for(i = 0; i < filas; i++){
-		ver[i] = 0;
-	}*/
+		vet[i] = 0;
+	}
 	
 	while(get_size(listaFilas)){	
 		// Pecorre filas
-		for(i = 0; i < get_size(listaFilas); i++){
+		for(i = 0; i < get_size(listaFilas); i++){			
 			fila_prioridade *fila = (fila_prioridade*)get_index(listaFilas, i);
-			
-			int *tempo = (int*)get_index(lista_tempo_fila, i);
-			printf("asd");
-		
-			printf("%d", (int)tempo);
-			/*
-			while((int)tempo <= hora_flag){	
+			if(get_size_fila(fila) == 0) continue;
+						
+			while(vet[i] < hora_flag && get_size_fila(fila) > 0){	
 				Veiculo *v = peek(fila);
 				
-				tempo += &get_tempo(v);
-			}*/
-		}		
-	}
-	
-	/*while(get_size(listaFilas)){
-		int popped = 0;
+				vet[i] += get_tempo(v);
+				valores_finais->total_veiculos += 1;
+				valores_finais->valor_arrecadado += get_valor(v);
+				
+				switch(get_tipo(v)){
+					case('P'):
+					case('p'):
+						valores_finais->total_p += 1;
+						break;
+					case('G'):
+					case('g'):
+						valores_finais->total_g += 1;
+						break;
+					case('M'):
+					case('m'):
+						valores_finais->total_m += 1;
+						break;
+				}
+				
+				pop_Elem(fila);
+			}
+			
+		}
 		
-		int i;
-		for(i = 0; i < get_size(listaFilas); i++){
-			fila_prioridade *fila = (fila_prioridade*)get_index(listaFilas, i);
+		int menor_hora = hora_flag;
+		for(i = 0; i < filas; i++){
+			int tempo = vet[i];
 			
-			if(valores_finais->tempo_total >= hora_flag){
-				printf("%d min: %.2f (%dM, %dP, %dG)\n", hora_flag, valores_finais->valor_arrecadado, 
-					valores_finais->total_m, valores_finais->total_p, valores_finais->total_g);
-				hora_flag += 60;
-				zera_veiculos(valores_finais);
-			}
-			
-			Veiculo *v = peek(fila);
-			
-			if(!popped){
-				valores_finais->tempo_total += get_valor(v);
-				popped = 1;
-			}
-			
-			valores_finais->valor_arrecadado += v->Valor;
-			
-			switch(get_tipo(v)){
-				case('P'):
-				case('p'):
-					valores_finais->total_p += 1;
-					break;
-				case('G'):
-				case('g'):
-					valores_finais->total_g += 1;
-					break;
-				case('M'):
-				case('m'):
-					valores_finais->total_m += 1;
-					break;
-			}
-			
-			valores_finais->total_veiculos += 1;
-			
-			pop_Elem(fila);
-			
-			if(!get_size_fila(fila)){
-				remover_index(listaFilas, i);
+			if(tempo < menor_hora){
+				menor_hora = tempo;
+				valores_finais->tempo_total = tempo;
+			}else{
+				valores_finais->tempo_total = menor_hora;
 			}
 		}
-			
 		
-	}
-	*/
-	
-	
-	if(valores_finais->tempo_total){
 		printf("%d min: %.2f (%dM, %dP, %dG)\n", valores_finais->tempo_total, valores_finais->valor_arrecadado, 
 			valores_finais->total_m, valores_finais->total_p, valores_finais->total_g);
+			
 		hora_flag += 60;
+		zera_veiculos(valores_finais);
+		
+		int isEmpty = 1;
+		for(i = 0; i < get_size(listaFilas); i++){
+			fila_prioridade *fila = (fila_prioridade*)get_index(listaFilas, i);
+			if(get_size_fila(fila) > 0){
+				isEmpty = 0;
+				break;
+			}
+		}
+		
+		if(isEmpty) {
+			break;
+		}
 	}
-	printf("%d veiculos\n", valores_finais->total_veiculos);
 	
-	printfilas(listaFilas);
+	printf("%d veiculos\n", valores_finais->total_veiculos);
 	
 	return 0;
 }
