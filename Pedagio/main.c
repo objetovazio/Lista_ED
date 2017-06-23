@@ -26,6 +26,8 @@ void printfilas(lista *l){
 		}
 		printf("-\n");	
 	}
+	
+	
 }
 
 void cria_filas_pedagio(lista *lista_filas, int qtd_filas){
@@ -35,7 +37,7 @@ void cria_filas_pedagio(lista *lista_filas, int qtd_filas){
 	}
 }
 
-void preenche_filas_pedagio(lista *lista_filas, char *entrada){
+void preenche_filas_pedagio(lista *lista_filas){
 	lista *lista_veiculos = criar_lista();
 	
 	printf("Reading: ");
@@ -44,14 +46,13 @@ void preenche_filas_pedagio(lista *lista_filas, char *entrada){
 	while (c != EOF && c != '\n'){
 		veic = criar_veiculo(c);
 		if(veic != NULL){
-			inserir(lista_filas, veic);
+			inserir(lista_veiculos, veic);
 		}
 		c = getchar();
 	}
 	
 	int i, pos = 0;
 	for(i = 0; i < get_size(lista_veiculos); i += 1){
-		printf("asd");
 		Veiculo *v = get_index(lista_veiculos, i);
 		
 		fila_prioridade *f = get_index(lista_filas, pos);
@@ -83,55 +84,84 @@ void zera_veiculos(Tuple *valores){
 
 int main(int argc, char *argv[]) {
 	int filas = 2; //atoi(argv[1]);
-	char *entrada = "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG";
+	//char *entrada = "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG";
 	int hora_flag = 60, tempo_atual = 0;
-	double valor_arrecadado = 0.0;
 
 	lista *listaFilas = criar_lista();
 	
 	cria_filas_pedagio(listaFilas, filas);
 	
-	preenche_filas_pedagio(listaFilas, entrada);
+	preenche_filas_pedagio(listaFilas);
 	
 	printf("%d fila(s)\n", filas);
 	Tuple *valores_finais = inicializa_valores_finais();
-	printf("aqui");
 	
-	while(get_size(listaFilas)){
+	lista *lista_tempo_fila = criar_lista();
+		
+	int i; // Cria um tempo para cada fila
+	for(i = 0; i < get_size(listaFilas); i++){
+		int *val = 0;
+		inserir(lista_tempo_fila, val);
+	}
+	
+	/*
+	int vet[filas];
+	for(i = 0; i < filas; i++){
+		ver[i] = 0;
+	}*/
+	
+	while(get_size(listaFilas)){	
+		// Pecorre filas
+		for(i = 0; i < get_size(listaFilas); i++){
+			fila_prioridade *fila = (fila_prioridade*)get_index(listaFilas, i);
+			
+			int *tempo = (int*)get_index(lista_tempo_fila, i);
+			printf("asd");
+		
+			printf("%d", (int)tempo);
+			/*
+			while((int)tempo <= hora_flag){	
+				Veiculo *v = peek(fila);
+				
+				tempo += &get_tempo(v);
+			}*/
+		}		
+	}
+	
+	/*while(get_size(listaFilas)){
 		int popped = 0;
 		
 		int i;
 		for(i = 0; i < get_size(listaFilas); i++){
 			fila_prioridade *fila = (fila_prioridade*)get_index(listaFilas, i);
-			printf("aqui X");
+			
 			if(valores_finais->tempo_total >= hora_flag){
 				printf("%d min: %.2f (%dM, %dP, %dG)\n", hora_flag, valores_finais->valor_arrecadado, 
 					valores_finais->total_m, valores_finais->total_p, valores_finais->total_g);
 				hora_flag += 60;
 				zera_veiculos(valores_finais);
 			}
-			printf("aqui Y");
+			
 			Veiculo *v = peek(fila);
 			
 			if(!popped){
-				
-				tempo_atual += v->TempoPassagem;
-				printf("aqui Z"); // TODO: ERRO AQUI AF TNC
+				valores_finais->tempo_total += get_valor(v);
 				popped = 1;
 			}
 			
-			
-			
 			valores_finais->valor_arrecadado += v->Valor;
 			
-			switch(v->Tipo){
+			switch(get_tipo(v)){
 				case('P'):
+				case('p'):
 					valores_finais->total_p += 1;
 					break;
 				case('G'):
+				case('g'):
 					valores_finais->total_g += 1;
 					break;
 				case('M'):
+				case('m'):
 					valores_finais->total_m += 1;
 					break;
 			}
@@ -147,6 +177,8 @@ int main(int argc, char *argv[]) {
 			
 		
 	}
+	*/
+	
 	
 	if(valores_finais->tempo_total){
 		printf("%d min: %.2f (%dM, %dP, %dG)\n", valores_finais->tempo_total, valores_finais->valor_arrecadado, 

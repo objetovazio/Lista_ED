@@ -18,17 +18,20 @@ Veiculo* criar_veiculo(char tipo){
 	
 	switch(tipo){
 		case 'P':
+		case 'p':
 			v->Valor = 2.00;
 			v->TempoPassagem = 1;
 			v->Prioridade = 1;
 			break;
 		case 'M':
+		case 'm':
 			v->Valor = 1.00;
 			v->TempoPassagem = 1;
 			v->Prioridade = 1;
 			break;
 		
 		case 'G':
+		case 'g':
 			v->Valor = 3.00;
 			v->TempoPassagem = 2;
 			v->Prioridade = 0;
